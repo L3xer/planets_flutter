@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:planets_flutter/model/planet.dart';
 import 'common/planet_summary.dart';
+
 
 
 class HomePage extends StatelessWidget {
@@ -49,7 +51,7 @@ class GradientAppBar extends StatelessWidget {
 class HomePageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new PlanetSummary();
+    return new PlanetSummary(planets[0]);
   }
 }
 
