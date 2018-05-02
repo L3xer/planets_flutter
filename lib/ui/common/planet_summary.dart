@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planets_flutter/model/planet.dart';
 import 'package:planets_flutter/ui/text_style.dart';
+import 'package:planets_flutter/ui/detail_page.dart';
 
 class PlanetSummary extends StatelessWidget {
   final Planet planet;
@@ -12,8 +13,11 @@ class PlanetSummary extends StatelessWidget {
     final planetThumbnail = new Container(
         margin: EdgeInsets.symmetric(vertical: 16.0),
         alignment: FractionalOffset.centerLeft,
-        child: new Image(
-            image: new AssetImage(planet.image), height: 92.0, width: 92.0));
+        child: new Hero(
+          tag: "planet-hero-${planet.id}",
+          child: new Image(
+              image: new AssetImage(planet.image), height: 92.0, width: 92.0),
+        ));
 
     Widget _planetValue({String text, String image}) {
       return new Container(
@@ -26,8 +30,6 @@ class PlanetSummary extends StatelessWidget {
         ],
       ));
     }
-
-    ;
 
     final planetCardContent = new Container(
       margin: EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
@@ -76,10 +78,14 @@ class PlanetSummary extends StatelessWidget {
           ]),
     );
 
-    return new Container(
-        margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-        child: new Stack(
-          children: <Widget>[planetCard, planetThumbnail],
-        ));
+    return new GestureDetector(
+      onTap: () => Navigator.of(context).push(new PageRouteBuilder(
+          pageBuilder: (_, __, ___) => new DetailPage(planet))),
+      child: new Container(
+          margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+          child: new Stack(
+            children: <Widget>[planetCard, planetThumbnail],
+          )),
+    );
   }
 }

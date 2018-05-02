@@ -8,7 +8,7 @@ class PlanetsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'Planets',      
-      home: new HomePage()
+      home: new HomePage(),
     );
   }
 }

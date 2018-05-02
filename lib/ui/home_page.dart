@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:planets_flutter/model/planet.dart';
 import 'common/planet_summary.dart';
 
-
-
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -51,7 +49,16 @@ class GradientAppBar extends StatelessWidget {
 class HomePageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new PlanetSummary(planets[0]);
+    return Expanded(
+      child: Container(
+        color: new Color(0xFF736AB7),
+        child: new ListView.builder(
+            itemCount: planets.length,
+            itemBuilder: (context, i) {
+              return new PlanetSummary(planets[i]);
+            },
+            padding: new EdgeInsets.symmetric(vertical: 16.0)),
+      ),
+    );
   }
 }
-
