@@ -5,14 +5,17 @@ import 'package:planets_flutter/ui/detail_page.dart';
 
 class PlanetSummary extends StatelessWidget {
   final Planet planet;
+  final bool horizontal;
 
-  PlanetSummary(this.planet);
+  PlanetSummary(this.planet, {this.horizontal = true});
+  PlanetSummary.vertical(this.planet) : horizontal = false;
 
   @override
   Widget build(BuildContext context) {
     final planetThumbnail = new Container(
         margin: EdgeInsets.symmetric(vertical: 16.0),
-        alignment: FractionalOffset.centerLeft,
+        alignment:
+            horizontal ? FractionalOffset.centerLeft : FractionalOffset.center,
         child: new Hero(
           tag: "planet-hero-${planet.id}",
           child: new Image(
@@ -32,10 +35,12 @@ class PlanetSummary extends StatelessWidget {
     }
 
     final planetCardContent = new Container(
-      margin: EdgeInsets.fromLTRB(76.0, 16.0, 16.0, 16.0),
+      margin: new EdgeInsets.fromLTRB(
+          horizontal ? 76.0 : 16.0, horizontal ? 16.0 : 42.0, 16.0, 16.0),
       constraints: new BoxConstraints.expand(),
       child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+            horizontal ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: <Widget>[
           new Container(height: 4.0),
           new Text(planet.name, style: Style.titleTextStyle),
@@ -47,12 +52,18 @@ class PlanetSummary extends StatelessWidget {
               width: 18.0,
               color: new Color(0xff00c6ff)),
           new Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               new Expanded(
+                  flex: horizontal ? 1 : 0,
                   child: _planetValue(
                       text: planet.distance,
                       image: "assets/images/ic_distance.png")),
+              new Container(
+                width: 32.0,
+              ),
               new Expanded(
+                  flex: horizontal ? 1 : 0,
                   child: _planetValue(
                       text: planet.gravity,
                       image: "assets/images/ic_gravity.png")),
@@ -64,8 +75,9 @@ class PlanetSummary extends StatelessWidget {
 
     final planetCard = new Container(
       child: planetCardContent,
-      height: 124.0,
-      margin: EdgeInsets.only(left: 46.0),
+      height: horizontal ? 124.0 : 154.0,
+      margin:
+          horizontal ? EdgeInsets.only(left: 46.0) : EdgeInsets.only(top: 72.0),
       decoration: new BoxDecoration(
           color: new Color(0xFF333366),
           shape: BoxShape.rectangle,
@@ -79,8 +91,14 @@ class PlanetSummary extends StatelessWidget {
     );
 
     return new GestureDetector(
-      onTap: () => Navigator.of(context).push(new PageRouteBuilder(
-          pageBuilder: (_, __, ___) => new DetailPage(planet))),
+      onTap: horizontal
+          ? () => Navigator.of(context).push(new PageRouteBuilder(
+                pageBuilder: (_, __, ___) => new DetailPage(planet),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) =>
+                        new FadeTransition(opacity: animation, child: child),
+              ))
+          : null,
       child: new Container(
           margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
           child: new Stack(
